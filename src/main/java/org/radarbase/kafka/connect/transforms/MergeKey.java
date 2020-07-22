@@ -29,7 +29,7 @@ import java.util.*;
  * This transforms records by copying the record key into the record value.
  */
 public class MergeKey<R extends ConnectRecord<R>> implements Transformation<R> {
-  private static final String PURPOSE = "copying fields from key to value and converting timestamps";
+  private static final String PURPOSE = "copying fields from key to value and adding the timestamp";
   private static final String TIMESTAMP_FIELD = "timestamp";
   private static final String KEYVALUE_SCHEMA_NAME = "org.radarbase.kafka.connect.transforms.MergeKey";
   private static final ConfigDef CONFIG_DEF = new ConfigDef();
