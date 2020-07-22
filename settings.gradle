@@ -1,1 +1,1 @@
-rootProject.name = "kafka-connect-transform"
+rootProject.name = "kafka-connect-transform-keyvalue"

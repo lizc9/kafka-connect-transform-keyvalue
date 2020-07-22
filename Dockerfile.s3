@@ -10,9 +10,8 @@ RUN gradle jar
 FROM ${BASE_IMAGE}
 
 COPY --from=builder /code/build/libs/kafka-connect-transform-keyvalue*.jar /usr/share/"${COMPONENT}"/plugins/
+COPY ./src/main/docker/launch /etc/confluent/docker/launch
 
 USER root
 RUN confluent-hub install --no-prompt --component-dir /usr/share/"${COMPONENT}"/plugins confluentinc/kafka-connect-s3:5.5.1
 USER appuser
-
-COPY ./src/main/docker/launch /etc/confluent/docker/launch

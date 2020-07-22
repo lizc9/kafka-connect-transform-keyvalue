@@ -9,4 +9,5 @@ RUN gradle jar
 
 FROM ${BASE_IMAGE}
 
-COPY --from=builder /code/build/libs/kafka-connect-transform-keyvalue*.jar /usr/share/"${COMPONENT}"/plugins/
+COPY --from=builder /code/build/libs/kafka-connect-transform*.jar /usr/share/"${COMPONENT}"/plugins/
+COPY ./src/main/docker/launch /etc/confluent/docker/launch
