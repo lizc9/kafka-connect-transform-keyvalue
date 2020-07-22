@@ -1,0 +1,22 @@
+plugins {
+    id 'java'
+    id 'java-library'
+}
+
+version = '1.1.0'
+description = "Kafka Connect transformation used to copy the key and value to a struct in the value of the record."
+
+sourceCompatibility = JavaVersion.VERSION_1_8
+targetCompatibility = JavaVersion.VERSION_1_8
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compileOnly 'org.apache.kafka:connect-transforms:2.5.0'
+}
+
+wrapper {
+    gradleVersion = '6.4.1'
+}
