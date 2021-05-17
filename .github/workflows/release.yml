@@ -45,17 +45,6 @@ jobs:
           files: 'build/libs/*;build/distributions/*'
           repo-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install gpg secret key
-        run: |
-          cat <(echo -e "${{ secrets.OSSRH_GPG_SECRET_KEY }}") | gpg --batch --import
-          gpg --list-secret-keys --keyid-format LONG
-
-      - name: Publish
-        env:
-          OSSRH_USER: ${{ secrets.OSSRH_USER }}
-          OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-        run: ./gradlew -Psigning.gnupg.keyName=${{ secrets.OSSRH_GPG_SECRET_KEY_NAME }} -Psigning.gnupg.executable=gpg -Psigning.gnupg.passphrase=${{ secrets.OSSRH_GPG_SECRET_KEY_PASSWORD }} publish closeAndReleaseSonatypeStagingRepository
-
   # Build and push tagged release docker image
   docker:
     # The type of runner that the job will run on
