@@ -127,5 +127,5 @@ jobs:
 
       - name: Inspect image S3
         run: |
-          docker pull ${{ env.DOCKER_IMAGE_S3 }}:${{ steps.docker_meta.outputs_s3.version }}
+          docker pull ${{ env.DOCKER_IMAGE_S3 }}:${{ steps.docker_meta_s3.outputs.version }}
           docker image inspect ${{ env.DOCKER_IMAGE_S3 }}:${{ steps.docker_meta_s3.outputs.version }}
