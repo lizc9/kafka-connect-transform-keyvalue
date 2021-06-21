@@ -84,32 +84,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push S3
-        id: docker_build_s3
-        uses: docker/build-push-action@v2
-        with:
-          context: ./
-          file: ./Dockerfile
-          # Allow running the image on the architectures supported by openjdk:11-jre-slim
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: ${{ steps.docker_meta_s3.outputs.tags }}
-          # Use runtime labels from docker_meta as well as fixed labels
-          labels: |
-            ${{ steps.docker_meta_s3.outputs.labels }}
-            maintainer=Joris Borgdorff <joris@thehyve.nl>, Pauline Conde <pauline.conde@kcl.ac.uk>
-            org.opencontainers.image.authors=Joris Borgdorff <joris@thehyve.nl>, Pauline Conde <pauline.conde@kcl.ac.uk>
-            org.opencontainers.image.vendor=RADAR-base
-            org.opencontainers.image.licenses=Apache-2.0
-
       - name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: ./
-          file: ./Dockerfile
           # Allow running the image on the architectures supported by openjdk:11-jre-slim
           platforms: linux/amd64,linux/arm64
+          cache-to: type=local,dest=/tmp/.buildx-cache,mode=max
           push: true
           tags: ${{ steps.docker_meta.outputs.tags }}
           # Use runtime labels from docker_meta as well as fixed labels
@@ -117,6 +98,24 @@ jobs:
             ${{ steps.docker_meta.outputs.labels }}
             maintainer=Joris Borgdorff <joris@thehyve.nl>
             org.opencontainers.image.authors=Joris Borgdorff <joris@thehyve.nl>
+            org.opencontainers.image.vendor=RADAR-base
+            org.opencontainers.image.licenses=Apache-2.0
+
+      - name: Build and push S3
+        id: docker_build_s3
+        uses: docker/build-push-action@v2
+        with:
+          file: Dockerfile.s3
+          # Allow running the image on the architectures supported by openjdk:11-jre-slim
+          platforms: linux/amd64,linux/arm64
+          cache-from: type=local,src=/tmp/.buildx-cache
+          push: true
+          tags: ${{ steps.docker_meta_s3.outputs.tags }}
+          # Use runtime labels from docker_meta as well as fixed labels
+          labels: |
+            ${{ steps.docker_meta_s3.outputs.labels }}
+            maintainer=Joris Borgdorff <joris@thehyve.nl>, Pauline Conde <pauline.conde@kcl.ac.uk>
+            org.opencontainers.image.authors=Joris Borgdorff <joris@thehyve.nl>, Pauline Conde <pauline.conde@kcl.ac.uk>
             org.opencontainers.image.vendor=RADAR-base
             org.opencontainers.image.licenses=Apache-2.0
 

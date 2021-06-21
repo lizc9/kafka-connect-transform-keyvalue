@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=confluentinc/cp-kafka-connect-base:6.1.1-2-ubi8
+ARG BASE_IMAGE=confluentinc/cp-kafka-connect-base:6.2.0-1-ubi8
 
 FROM gradle:7.0-jdk8 as builder
 
@@ -13,5 +13,5 @@ COPY --from=builder /code/build/libs/kafka-connect-transform-keyvalue*.jar /usr/
 COPY ./src/main/docker/launch /etc/confluent/docker/launch
 
 USER root
-RUN confluent-hub install --no-prompt --component-dir /usr/share/"${COMPONENT}"/plugins confluentinc/kafka-connect-s3:5.5.1
+RUN confluent-hub install --no-prompt --component-dir /usr/share/"${COMPONENT}"/plugins confluentinc/kafka-connect-s3:10.0.0
 USER appuser
