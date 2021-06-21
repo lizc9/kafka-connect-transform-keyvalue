@@ -5,7 +5,7 @@ FROM gradle:7.1-jdk8 as builder
 COPY ./*.gradle /code/
 COPY src/main/java /code/src/main/java
 WORKDIR /code
-RUN gradle jar
+RUN gradle jar --no-watch-fs
 
 FROM ${BASE_IMAGE}
 
