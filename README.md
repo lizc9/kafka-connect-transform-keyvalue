@@ -39,6 +39,10 @@ The JSON can also be used to update an existing connector:
 curl -s -X POST -H 'Content-Type: application/json' --data @connector.json http://localhost:8083/connectors/Connector1/config
 ```
 
+### Docker build
+
+This repository creates two docker builds, a base connector image [radarbase/kafka-connect-transform-keyvalue](https://hub.docker.com/r/radarbase/kafka-connect-transform-keyvalue) and an extension of that image that is bundled with the Confluent S3 connector [radarbase/kafka-connect-transform-s3](https://hub.docker.com/r/radarbase/kafka-connect-transform-s3).
+
 ## Transformations
 
 ### MergeKey
