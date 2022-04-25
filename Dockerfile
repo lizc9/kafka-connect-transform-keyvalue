@@ -1,6 +1,6 @@
-ARG BASE_IMAGE=confluentinc/cp-kafka-connect-base:7.0.1
+ARG BASE_IMAGE=confluentinc/cp-kafka-connect-base:7.1.1
 
-FROM gradle:7.3-jdk11 as builder
+FROM --platform=$BUILDPLATFORM gradle:7.4-jdk11 as builder
 
 COPY ./*.gradle /code/
 COPY src/main/java /code/src/main/java
