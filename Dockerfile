@@ -11,3 +11,4 @@ FROM ${BASE_IMAGE}
 
 COPY --from=builder /code/build/libs/kafka-connect-transform-keyvalue*.jar /usr/share/"${COMPONENT}"/plugins/
 COPY ./src/main/docker/launch /etc/confluent/docker/launch
+COPY ./src/main/docker/kafka-wait /usr/bin/kafka-wait
