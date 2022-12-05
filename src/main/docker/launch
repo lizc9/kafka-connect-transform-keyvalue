@@ -35,12 +35,12 @@ if [ "$KAFKA_JMX_PORT" ]; then
 fi
 #
 ## Busy waiting loop that waits until all topic are available
-#echo "===> Wait for infrastructure ..."
-#kafka-wait
-#radar_check=$?
-#if [ "$radar_check" -ne 0 ]; then
-#    exit $radar_check
-#fi
+echo "===> Wait for infrastructure ..."
+kafka-wait
+radar_check=$?
+if [ "$radar_check" -ne 0 ]; then
+    exit $radar_check
+fi
 
 echo "===> Launching ${COMPONENT} ..."
 # Add our jar to the classpath so that the custom classes can be loaded first.
