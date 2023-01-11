@@ -16,5 +16,5 @@ COPY ./src/main/docker/launch /etc/confluent/docker/launch
 COPY ./src/main/docker/kafka-wait /usr/bin/kafka-wait
 
 USER root
-RUN confluent-hub install --no-prompt --component-dir /usr/share/"${COMPONENT}"/plugins confluentinc/kafka-connect-s3:10.3.1
+RUN confluent-hub install --no-prompt --component-dir /usr/share/"${COMPONENT}"/plugins confluentinc/kafka-connect-s3:10.3.0
 USER appuser
