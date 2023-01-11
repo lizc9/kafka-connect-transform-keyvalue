@@ -1,4 +1,4 @@
-ARG BASE_IMAGE=confluentinc/cp-kafka-connect-base:7.3.0
+ARG BASE_IMAGE=confluentinc/cp-kafka-connect-base:7.3.1
 
 FROM --platform=$BUILDPLATFORM gradle:7.6-jdk11 as builder
 
@@ -8,6 +8,8 @@ WORKDIR /code
 RUN gradle jar --no-watch-fs
 
 FROM ${BASE_IMAGE}
+
+ENV WAIT_FOR_KAFKA="1"
 
 COPY --from=builder /code/build/libs/kafka-connect-transform-keyvalue*.jar /usr/share/"${COMPONENT}"/plugins/
 COPY ./src/main/docker/launch /etc/confluent/docker/launch
