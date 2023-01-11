@@ -1,5 +1,10 @@
 #!/bin/bash
 
+if [ "$WAIT_FOR_KAFKA" != "1" ]; then
+  echo "Starting without checking for Kafka availability"
+  exit 0
+fi
+
 max_timeout=32
 
 # Check if variables exist

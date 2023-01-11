@@ -9,6 +9,8 @@ RUN gradle jar --no-watch-fs
 
 FROM ${BASE_IMAGE}
 
+ENV WAIT_FOR_KAFKA="1"
+
 COPY --from=builder /code/build/libs/kafka-connect-transform-keyvalue*.jar /usr/share/"${COMPONENT}"/plugins/
 COPY ./src/main/docker/launch /etc/confluent/docker/launch
 COPY ./src/main/docker/kafka-wait /usr/bin/kafka-wait
