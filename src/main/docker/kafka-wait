@@ -7,6 +7,23 @@ fi
 
 max_timeout=32
 
+
+COMMAND_CONFIG_FILE_PATH="./command_config.properties"
+
+if [ -f "$COMMAND_CONFIG_FILE_PATH" ]; then
+   /bin/rm -f "$COMMAND_CONFIG_FILE_PATH"
+fi
+
+while IFS='=' read -r -d '' n v; do
+
+   if [[ "$n" == "CONNECT_"* ]]; then
+       name="${n/CONNECT_/""}" # remove first "CONNECT_"
+       name="${name,,}" # lower case
+       name="${name//_/"."}" # replace all '_' with '.'
+       echo "$name=$v" >> ${COMMAND_CONFIG_FILE_PATH}
+   fi
+done < <(env -0)
+
 # Check if variables exist
 if [ -z "$CONNECT_BOOTSTRAP_SERVERS" ]; then
     echo "CONNECT_BOOTSTRAP_SERVERS is not defined"
@@ -16,7 +33,7 @@ else
     tries=10
     timeout=1
     while true; do
-        KAFKA_CHECK=$(kafka-broker-api-versions --bootstrap-server "$CONNECT_BOOTSTRAP_SERVERS" | grep "(id: " | wc -l)
+        KAFKA_CHECK=$(kafka-broker-api-versions --bootstrap-server "$CONNECT_BOOTSTRAP_SERVERS" --command-config "${COMMAND_CONFIG_FILE_PATH}" | grep "(id: " | wc -l)
 
         if [ "$KAFKA_CHECK" -ge "$KAFKA_BROKERS" ]; then
             echo "Kafka brokers available."
