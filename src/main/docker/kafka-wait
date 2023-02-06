@@ -8,21 +8,23 @@ fi
 max_timeout=32
 
 
-COMMAND_CONFIG_FILE_PATH="./command_config.properties"
+IS_TEMP=0
 
-if [ -f "$COMMAND_CONFIG_FILE_PATH" ]; then
-   /bin/rm -f "$COMMAND_CONFIG_FILE_PATH"
+if [ -n "$COMMAND_CONFIG_FILE_PATH" ]; then
+    COMMAND_CONFIG_FILE_PATH="$(mktemp)"
+    IS_TEMP=1
 fi
 
-while IFS='=' read -r -d '' n v; do
-
-   if [[ "$n" == "CONNECT_"* ]]; then
-       name="${n/CONNECT_/""}" # remove first "CONNECT_"
-       name="${name,,}" # lower case
-       name="${name//_/"."}" # replace all '_' with '.'
-       echo "$name=$v" >> ${COMMAND_CONFIG_FILE_PATH}
-   fi
-done < <(env -0)
+if [ ! -f "$COMMAND_CONFIG_FILE_PATH" ] || [ $IS_TEMP = 1 ]; then
+    while IFS='=' read -r -d '' n v; do
+        if [[ "$n" == "CONNECT_"* ]]; then
+            name="${n/CONNECT_/""}" # remove first "CONNECT_"
+            name="${name,,}" # lower case
+            name="${name//_/"."}" # replace all '_' with '.'
+            echo "$name=$v" >> ${COMMAND_CONFIG_FILE_PATH}
+        fi
+    done < <(env -0)
+fi
 
 # Check if variables exist
 if [ -z "$CONNECT_BOOTSTRAP_SERVERS" ]; then
@@ -78,4 +80,8 @@ else
     done
 
     echo "Schema registry is available."
+fi
+
+if [ $IS_TEMP = 1 ]; then
+    /bin/rm -f "$COMMAND_CONFIG_FILE_PATH"
 fi
