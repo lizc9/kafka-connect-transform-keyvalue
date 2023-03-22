@@ -10,7 +10,7 @@ max_timeout=32
 
 IS_TEMP=0
 
-if [ -n "$COMMAND_CONFIG_FILE_PATH" ]; then
+if [ -z "$COMMAND_CONFIG_FILE_PATH" ]; then
     COMMAND_CONFIG_FILE_PATH="$(mktemp)"
     IS_TEMP=1
 fi
