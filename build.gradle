@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'java-library'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 version = '7.6.0-hotfix'
@@ -15,8 +16,25 @@ repositories {
 
 dependencies {
     compileOnly 'org.apache.kafka:connect-transforms:3.6.2'
+    implementation 'org.mongodb:bson:4.3.1'
+    implementation 'org.mongodb:mongodb-driver-sync:4.3.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.18.1'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.1'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.1'
+    testImplementation "junit:junit:4.13.2"
+    testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.7.0"
 }
 
 wrapper {
     gradleVersion = '8.3'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+shadowJar {
+    archiveClassifier.set('')
+    archiveVersion.set('')
+    mergeServiceFiles()
 }
